@@ -17,6 +17,7 @@ environment:
   sdk: ">=2.1.0 <3.0.0"
 
 dependencies:
+  flutter_rating_bar: ^1.1.0
   flutter:
     sdk: flutter
 
@@ -39,6 +40,13 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  assets:
+    - assets/images/carwash.jpg
+    - assets/images/review3.png
+    - assets/images/logo.png
+    - assets/images/signup.jpg
+    - assets/images/facebook48.png
+    - assets/images/google48.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
