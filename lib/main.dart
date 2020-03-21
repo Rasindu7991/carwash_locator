@@ -3,7 +3,7 @@ import 'pages/LandingPage.dart';
 
 void main(){
   runApp(new MaterialApp(
-    theme: ThemeData(primaryColor: Colors.black,accentColor: Colors.white ),
+    theme: ThemeData(primaryColor: Colors.blue,accentColor: Colors.white ),
     debugShowCheckedModeBanner: false,
     home: LandingPage(),
   ));

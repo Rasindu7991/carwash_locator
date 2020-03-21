@@ -42,8 +42,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/carwash.jpg
-    - assets/images/review3.png
-    - assets/images/logo.png
+    - assets/images/logo.jpg
     - assets/images/signup.jpg
     - assets/images/facebook48.png
     - assets/images/google48.png

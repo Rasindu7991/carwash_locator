@@ -6,6 +6,10 @@ class SignUpPage extends StatelessWidget{
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
+      appBar: AppBar(
+        title: Text("SignUp"),
+        centerTitle: true,
+      ),
       resizeToAvoidBottomInset: false,
       body: Stack(
         fit: StackFit.expand,
@@ -21,16 +25,16 @@ class SignUpPage extends StatelessWidget{
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               Container(
-                padding: EdgeInsets.fromLTRB(60.0, 60.0, 0.0, 0.0),
+                padding: EdgeInsets.fromLTRB(60.0, 40.0, 0.0, 0.0),
                 child: Row(
                   children: <Widget>[
                     CircleAvatar(
-                      backgroundImage: AssetImage('assets/images/logo.png'),
+                      backgroundImage: AssetImage('assets/images/logo.jpg'),
                     ),
                     Text(
                       "  CarWash Locator v.1.0",
                       style: TextStyle(
-                        fontSize: 23.0, foreground: Paint() ..color=Colors.white
+                        fontSize: 23.0, foreground: Paint() ..color=Colors.black
                         ,fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -106,20 +110,26 @@ class SignUpPage extends StatelessWidget{
                 ) ,
               ),
               Container(
-                padding: EdgeInsets.fromLTRB(100.0, 390.0, 0.0, 0.0),
-                child: Text(
-                    'Not Have Account? Sign up',
-                    style: TextStyle(
-                        fontSize: 17.0, foreground: Paint() ..color=Colors.white)
-                ),
+                width: 340,
+                padding: EdgeInsets.fromLTRB(23.0, 390.0, 0.0, 0.0),
+                child:TextField(
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    hintText: "Re-Enter Password",
+                    filled: true,
+                    fillColor: Colors.white,
+//    icon: Icon(Icons.person),
+                    prefixIcon: Icon(Icons.vpn_key),
+                  ),
+                ) ,
               ),
               Container(
                 constraints: BoxConstraints(minWidth: 320.0,minHeight: 220.0),
-                padding: EdgeInsets.fromLTRB(50.0, 420.0, 0.0, 0.0),
+                padding: EdgeInsets.fromLTRB(50.0, 450.0, 0.0, 0.0),
                 child: FlatButton(
                   shape: StadiumBorder(),
                   color: Colors.deepPurple,
-                  child: Text('Login',style: TextStyle(fontSize: 22,foreground: Paint() ..color=Colors.white)), //`Text` to display
+                  child: Text('SignUp',style: TextStyle(fontSize: 22,foreground: Paint() ..color=Colors.white)), //`Text` to display
                   onPressed: () {
                     //Code to execute when Floating Action Button is clicked
                     //...

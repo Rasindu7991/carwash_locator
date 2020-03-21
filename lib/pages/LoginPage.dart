@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-
+import 'HomePage.dart';
 class LoginPage extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
@@ -15,11 +14,55 @@ class LoginPage extends StatelessWidget{
                 child:Stack(
                   children: <Widget>[
                     Container(
-                      padding: EdgeInsets.fromLTRB(10.0, 30.0, 0.0, 0.0),
+                      width: 340,
+                      padding: EdgeInsets.fromLTRB(23.0, 100.0, 0.0, 0.0),
+                      child:TextField(
+                        style: new TextStyle(color: Colors.white),
+                        decoration: InputDecoration(
+                          hintText: "Email",
+                          hintStyle: TextStyle(color: Colors.white),
+                          filled: true,
+                          fillColor: Colors.blueAccent,
+//    icon: Icon(Icons.person),
+
+                          prefixIcon: Icon(Icons.email),
+                        ),
+                      ) ,
+                    ),
+                    Container(
+                      width: 340,
+                      padding: EdgeInsets.fromLTRB(23.0, 150.0, 0.0, 0.0),
+                      child:TextField(
+                        style: new TextStyle(color: Colors.white),
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          hintText: "Password",
+                          hintStyle: TextStyle(color: Colors.white),
+                          filled: true,
+                          fillColor: Colors.blueAccent,
+//    icon: Icon(Icons.person),
+                          prefixIcon: Icon(Icons.vpn_key),
+                        ),
+                      ) ,
+                    ),
+                    Container(
+                      padding: EdgeInsets.fromLTRB(100.0, 200.0, 0.0, 0.0),
                       child: Text(
-                          'Login',
+                          'Not Have Account? Sign up',
                           style: TextStyle(
-                              fontSize: 20.0, fontWeight: FontWeight.bold, foreground: Paint() ..color=Colors.black)
+                              fontSize: 17.0, foreground: Paint() ..color=Colors.black)
+                      ),
+                    ),
+                    Container(
+                      constraints: BoxConstraints(minWidth: 320.0,minHeight: 220.0),
+                      padding: EdgeInsets.fromLTRB(50.0, 250.0, 0.0, 0.0),
+                      child: FlatButton(
+                        shape: StadiumBorder(),
+                        color: Colors.deepPurple,
+                        child: Text('Login',style: TextStyle(fontSize: 22,foreground: Paint() ..color=Colors.white)), //`Text` to display
+                        onPressed: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>HomePage()));
+                        },
                       ),
                     ),
                   ],

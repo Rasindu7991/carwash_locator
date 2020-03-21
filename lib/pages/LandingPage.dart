@@ -94,7 +94,6 @@ class landingPageState extends State<LandingPage>{
           ),
         ) /* add child content here */,
       ),
-
     );
   }
 }
