@@ -1,8 +1,6 @@
-
 import 'package:flutter/material.dart';
 import 'LoginPage.dart';
 import 'SignUpPage.dart';
-import 'dart:async';
 
 class LandingPage extends StatefulWidget{
   State createState()=>landingPageState();
@@ -14,7 +12,6 @@ class landingPageState extends State<LandingPage>{
   void initState() {
     // TODO: implement initState
     super.initState();
-    Timer(Duration(seconds: 5), ()=>print("Timeout"));
   }
 
   @override
