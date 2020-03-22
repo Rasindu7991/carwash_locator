@@ -1,9 +1,8 @@
-
-import 'package:carwash_locator/pages/LandingPage.dart';
+import 'package:carwash_locator/pages/CarWashList.dart';
+import 'package:carwash_locator/pages/MyReviews.dart';
 import 'package:flutter/material.dart';
-import 'LoginPage.dart';
-import 'SignUpPage.dart';
-import 'LandingPage.dart';
+import 'CarWashList.dart';
+import 'SearchCarWash.dart';
 
 import 'dart:async';
 
@@ -15,9 +14,9 @@ class HomePage extends StatefulWidget{
 class homePageState extends State<HomePage>{
   int _selectedPage=0;
   final _pageOptions=[
-    LoginPage(),
-    LandingPage(),
-    SignUpPage(),
+    CarWashList(),
+    SearchCarWash(),
+    MyReviews(),
   ];
 
   @override
@@ -35,7 +34,7 @@ class homePageState extends State<HomePage>{
      ),
      home: Scaffold(
        appBar: AppBar(
-         title: Text('Home'),
+         title: Text('Carwash Locator'),
        ),
        body: _pageOptions[_selectedPage],
        bottomNavigationBar: BottomNavigationBar(
@@ -51,12 +50,12 @@ class homePageState extends State<HomePage>{
                title: Text('Home')
            ),
            BottomNavigationBarItem(
-               icon: Icon(Icons.work),
-               title: Text('Work')
+               icon: Icon(Icons.map),
+               title: Text('Search')
            ),
            BottomNavigationBarItem(
-               icon: Icon(Icons.laptop),
-               title: Text('Lap')
+               icon: Icon(Icons.rate_review),
+               title: Text('My Reviews')
            ),
          ],
        ) ,

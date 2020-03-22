@@ -65,7 +65,7 @@ class SplashScreenState extends State<SplashScreen>{
                       padding: EdgeInsets.only(top: 20.0),
                     ),
                     Text(
-                      "one click!locate car wash!!",
+                      "one click! locate car wash!!",
                       style: TextStyle(color: Colors.white,
                           fontSize: 18.0,
                           fontWeight: FontWeight.bold
