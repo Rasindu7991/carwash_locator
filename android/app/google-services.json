@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "923192264536",
+    "firebase_url": "https://ctse-project-3afc9.firebaseio.com",
+    "project_id": "ctse-project-3afc9",
+    "storage_bucket": "ctse-project-3afc9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:923192264536:android:5d5d82301ecb14c752872d",
+        "android_client_info": {
+          "package_name": "lk.sliit.flutterapp.carwash_locator"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "923192264536-ltp9ic87l9q4f0ui9qglchjr5llep1ha.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMELPl9ZmZDx-9AEvkURPjdiPc-aqQnlo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "923192264536-ltp9ic87l9q4f0ui9qglchjr5llep1ha.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
