@@ -1,5 +1,6 @@
 import 'package:carwash_locator/pages/CarWashList.dart';
 import 'package:carwash_locator/pages/MyReviews.dart';
+import 'package:carwash_locator/pages/UserReviews.dart';
 import 'package:flutter/material.dart';
 import 'CarWashList.dart';
 import 'SearchCarWash.dart';
@@ -16,7 +17,7 @@ class homePageState extends State<HomePage>{
   final _pageOptions=[
     CarWashList(),
     SearchCarWash(),
-    MyReviews(),
+    UserReviews(),
   ];
 
   @override

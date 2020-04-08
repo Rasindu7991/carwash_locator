@@ -2,6 +2,7 @@ import 'package:carwash_locator/pages/MyReviews.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../listModel/ListModel.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 
 class CarWashList extends StatefulWidget {
@@ -29,27 +30,40 @@ class _CarWashListState extends State<CarWashList> {
         centerTitle: true,
         elevation: 0,
       ),
-      body: ListView.builder(
-          itemCount: locations.length,
-          itemBuilder: (context, index) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 4.0),
-              child: Card(
-                child: CustomListItem(
-                  location: locations[index].location,
-                  rating: locations[index].rating,
-                  thumbnail: Container(
-                    child:  Image.asset(
-                      'assets/images/${locations[index].icon}',
+      body: StreamBuilder(
+        stream: Firestore.instance.collection('carwashlist').snapshots(),
+        builder: (context, snapshot) {
+          if(!snapshot.hasData){
+            const Text('Loading');
+            return null;
+          }
+          else{
+            return ListView.builder(
+                itemCount: locations.length,
+                itemBuilder: (context, index) {
+                  DocumentSnapshot myShopList = snapshot.data.documents[index];
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 4.0),
+                    child: Card(
+                      child: CustomListItem(
+                        shopid: myShopList['shopid'],
+                        location: myShopList['location'],
+                        rating: myShopList['rating'],
+                        thumbnail: Container(
+                            child:  Image.asset(
+                              'assets/images/${myShopList['image']}',
 
-                    )
-                  ),
-                  shopName: locations[index].shopName,
-                ),
-              ),
+                            )
+                        ),
+                        shopName: myShopList['name'],
+                      ),
+                    ),
+                  );
+                }
             );
           }
-      ),
+        },
+      )
     );
   }
 
@@ -61,12 +75,14 @@ class CustomListItem extends StatelessWidget {
     this.shopName,
     this.location,
     this.rating,
+    this.shopid
   });
 
   final Widget thumbnail;
   final String shopName;
   final String location;
   final int rating;
+  final String shopid;
 
   @override
   Widget build(BuildContext context) {
@@ -82,6 +98,7 @@ class CustomListItem extends StatelessWidget {
           Expanded(
             flex: 3,
             child: _ShopDescription(
+              shopid: shopid,
               shopName: shopName,
               location: location,
               rating: rating,
@@ -99,6 +116,7 @@ class CustomListItem extends StatelessWidget {
 class _ShopDescription extends StatelessWidget {
   const _ShopDescription({
     Key key,
+    this.shopid,
     this.shopName,
     this.location,
     this.rating,
@@ -107,6 +125,7 @@ class _ShopDescription extends StatelessWidget {
   final String shopName;
   final String location;
   final int rating;
+  final String shopid;
 
   @override
   Widget build(BuildContext context) {
@@ -144,7 +163,7 @@ class _ShopDescription extends StatelessWidget {
                       child: RaisedButton(
                         child: Text("Review", style: TextStyle(color: Colors.white),),
                         onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=>MyReviews()));
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>MyReviews(shopid: shopid )));
                         },
                         color: Colors.blue,
                       ),
