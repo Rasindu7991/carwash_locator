@@ -90,6 +90,7 @@ class _MyReviewsState extends State<MyReviews> {
                           itemCount: snapshot.data.documents.length,
                           itemBuilder: (context, index) {
                             DocumentSnapshot myReviews = snapshot.data.documents[index];
+                            int ratingdb = myReviews['rating'].toInt();
                             return Padding(
                               padding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 4.0),
                               child: Card(
@@ -121,7 +122,7 @@ class _MyReviewsState extends State<MyReviews> {
                                               children: <Widget>[
                                                 Padding(
                                                   padding: EdgeInsets.only(right: 8.0),
-                                                  child: Row(children: _stars((reviews[index].rating))),
+                                                  child: Row(children: _stars((ratingdb))),
                                                 ),
 
                                                 Text('${myReviews['date']}')
@@ -196,8 +197,9 @@ class _MyReviewsState extends State<MyReviews> {
 
 }
 
-List<Container> _stars(int count) {
-  return List.generate(count, (i) => Container(
+List<Container> _stars(int countdb) {
+  //int count = countdb.toInt();
+  return List.generate(countdb, (i) => Container(
       child: Icon(
           FontAwesomeIcons.solidStar,
           color: Colors.amber,

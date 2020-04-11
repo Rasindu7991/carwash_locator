@@ -56,6 +56,7 @@ class _UserReviewsState extends State<UserReviews> {
                           itemCount: snapshot.data.documents.length,
                           itemBuilder: (context, index) {
                             DocumentSnapshot myReviews = snapshot.data.documents[index];
+                            int ratingdb = myReviews['rating'].toInt();
                             FullScreenDialog _myDialog = new FullScreenDialog(reviews: myReviews,);
                             return Padding(
                               padding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 4.0),
@@ -88,7 +89,7 @@ class _UserReviewsState extends State<UserReviews> {
                                               children: <Widget>[
                                                 Padding(
                                                   padding: EdgeInsets.only(right: 8.0),
-                                                  child: Row(children: _stars((reviews[index].rating))),
+                                                  child: Row(children: _stars((ratingdb))),
                                                 ),
 
                                                 Text('${myReviews['date']}')
@@ -145,9 +146,13 @@ List<Container> _stars(int count) {
           size: 13.0))).toList(); // replace * with your rupee or use Icon instead
 }
 
-void updateData(DocumentSnapshot doc,String description) async {
+void updateData(DocumentSnapshot doc,String description,double rating) async {
   final db = Firestore.instance;
-  await db.collection('reviews').document(doc.documentID).updateData({'description': description});
+  int ratingInt = rating.toInt();
+  DateTime now = new DateTime.now();
+  DateTime date = new DateTime(now.year, now.month, now.day);
+  String dateString = date.toString();
+  await db.collection('reviews').document(doc.documentID).updateData({'description': description, 'date': dateString, 'rating': ratingInt});
 }
 
 void deleteData(DocumentSnapshot doc) async {
@@ -161,7 +166,7 @@ class FullScreenDialog extends StatefulWidget {
   String _skillTwo = "not Added";
   String _skillThree = "any skills yet";
 
-  final DocumentSnapshot reviews;
+  final  DocumentSnapshot reviews;
 
   FullScreenDialog({Key key, @required this.reviews}) : super(key: key);
 
@@ -171,30 +176,34 @@ class FullScreenDialog extends StatefulWidget {
 }
 
 class FullScreenDialogState extends State<FullScreenDialog> {
-  TextEditingController _skillOneController = new TextEditingController();
-  TextEditingController _skillTwoController = new TextEditingController();
 
-  TextEditingController _skillThreeController = new TextEditingController();
+
+   double rating = 4.0;
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController _skillTwoController = new TextEditingController(text: widget.reviews['description']);
     return new Scaffold(
         appBar: new AppBar(
           title: new Text("Write your review"),
         ),
         body: new Padding(child: new ListView(
           children: <Widget>[
-            new TextField(controller: _skillOneController,),
-            new TextField(controller: _skillTwoController,),
-            new TextField(controller: _skillThreeController,),
+            Padding(
+              padding: EdgeInsets.fromLTRB(115.0, 25.0, 0.0, 10.0),
+              child: StarRating(
+                rating: rating ,  //widget.reviews['rating'].toDouble()
+                onRatingChanged: (rating) => setState(() => this.rating = rating),
+              ),
+            ),
+            new TextField(controller: _skillTwoController,keyboardType: TextInputType.multiline,maxLines: null),
+
             new Row(
               children: <Widget>[
                 new Expanded(child: new RaisedButton(onPressed: () {
-//                  widget._skillThree = _skillThreeController.text;
-//                  widget._skillTwo = _skillTwoController.text;
-//                  widget._skillOne = _skillOneController.text;
-                  String description = _skillOneController.text + _skillTwoController.text + _skillThreeController.text;
-                  updateData(widget.reviews, description );
+
+                  String description = _skillTwoController.text;
+                  updateData(widget.reviews, description, rating);
                   Navigator.pop(context);
                 }, child: new Text("Save"),))
               ],
@@ -206,3 +215,5 @@ class FullScreenDialogState extends State<FullScreenDialog> {
 
 
 }
+
+
