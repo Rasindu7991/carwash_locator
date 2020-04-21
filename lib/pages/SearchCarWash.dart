@@ -1,11 +1,14 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SearchCarWash extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Google Maps Demo',
       home: MapSample(),
     );
@@ -18,39 +21,100 @@ class MapSample extends StatefulWidget {
 }
 
 class MapSampleState extends State<MapSample> {
-  Completer<GoogleMapController> _controller = Completer();
+  bool mapEnabled=false;
+  var currentLocation;
+  GoogleMapController mapController;
+  BitmapDescriptor pinLocationIcon;
+  List<Marker> markers = <Marker>[];
+  var carWashLocation=[];
 
-  static final CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
-    zoom: 14.4746,
-  );
+  void initState(){
+    super.initState();
+    Geolocator().getCurrentPosition().then((currentlocation){
+      setState(() {
+           currentLocation=currentlocation;
+           mapEnabled=true;
+           populateCarWash();
+      });
+    });
+    setCustomMapPin();
+  }
+  void populateCarWash(){
+    carWashLocation=[];
+    Firestore.instance.collection('markers').getDocuments().then((docs){
+        if(docs.documents.isNotEmpty){
+          for(int i=0;i<docs.documents.length;++i){
+              carWashLocation.add(docs.documents[i].data);
+              initMarker(docs.documents[i].data);
+          }
+        }
+    });
+  }
+   initMarker(client){
+    markers.add(Marker(
+      markerId: MarkerId(client['id']),
+      position: LatLng(client['location'].latitude,client['location'].longitude),
+      draggable: false,
+      infoWindow: InfoWindow(
+        title: client['carwashName'],
+      )
+    ));
+   }
 
-  static final CameraPosition _kLake = CameraPosition(
-      bearing: 192.8334901395799,
-      target: LatLng(37.43296265331129, -122.08832357078792),
-      tilt: 59.440717697143555,
-      zoom: 19.151926040649414);
+  void setCustomMapPin() async {
+    pinLocationIcon = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 2.5),
+        'assets/images/pin.png');
+  }
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      body: GoogleMap(
-        mapType: MapType.hybrid,
-        initialCameraPosition: _kGooglePlex,
-        onMapCreated: (GoogleMapController controller) {
-          _controller.complete(controller);
-        },
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _goToTheLake,
-        label: Text('To nearest car wash!'),
-        icon: Icon(Icons.local_car_wash),
+    // TODO: implement build
+    return Scaffold(
+      body: Column(
+        children: <Widget>[
+          Stack(
+            children: <Widget>[
+              Container(
+                height: MediaQuery.of(context).size.height - 130.0,
+//                width: double.infinity,
+                child:mapEnabled ? GoogleMap(
+                      onMapCreated: onMapCreated,
+                      mapType: MapType.normal,
+                      initialCameraPosition:CameraPosition(
+                        target: LatLng(currentLocation.latitude,currentLocation.longitude),
+                        zoom: 15.0,
+//                        bearing: 192.8334901395799,
+//                        tilt: 59.440717697143555,
+                      ),
+                      markers: Set<Marker>.of(markers),
+                ) : Center(
+                  child:
+                  Text('Loading Please Wait',style: TextStyle(
+                    fontSize: 20.0,
+                  ),),
+                ),
+              )
+            ],
+          )
+        ],
       ),
     );
   }
+ void onMapCreated(controller){
+    setState(() {
+      mapController=controller;
+      markers.add(Marker(
+        markerId: MarkerId('<MARKER_ID>'),
+        position: LatLng(currentLocation.latitude,currentLocation.longitude),
+        icon: pinLocationIcon,
+        infoWindow: InfoWindow(
+          title: 'You are Here!',
+        )
+      )
+      );
+    });
+ }
 
-  Future<void> _goToTheLake() async {
-    final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
-  }
+
 }

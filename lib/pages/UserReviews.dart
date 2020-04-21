@@ -19,7 +19,6 @@ class _UserReviewsState extends State<UserReviews> {
   String name,description,date;
   String userId = "user123";
 
-
   List<ReviewModel> reviews = [
 
     ReviewModel(name: 'Hohn Wick', description: "Great app.Performance is very good",rating: 4, date: '2019-08-21'),
@@ -185,7 +184,7 @@ class FullScreenDialogState extends State<FullScreenDialog> {
     TextEditingController _skillTwoController = new TextEditingController(text: widget.reviews['description']);
     return new Scaffold(
         appBar: new AppBar(
-          title: new Text("Write your review"),
+          title: new Text("Update your review"),
         ),
         body: new Padding(child: new ListView(
           children: <Widget>[

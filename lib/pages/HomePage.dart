@@ -29,6 +29,7 @@ class homePageState extends State<HomePage>{
   @override
   Widget build(BuildContext context) {
    return MaterialApp (
+     debugShowCheckedModeBanner: false,
      title: 'Carwash Locator',
      theme:ThemeData(
        primarySwatch: Colors.blue,
