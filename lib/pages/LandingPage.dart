@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'LoginPage.dart';
 import 'SignUpPage.dart';
+import 'package:carwash_locator/services/Authentication.dart';
+
 
 class LandingPage extends StatefulWidget{
+  final BaseAuth auth;
+  LandingPage({this.auth});
   State createState()=>landingPageState();
 }
 
@@ -47,30 +51,7 @@ class landingPageState extends State<LandingPage>{
                   thickness: 2,
                 ),
               ),
-              Container(
-                  padding: EdgeInsets.fromLTRB(50.0, 450.0, 0.0, 0.0),
-                  constraints: BoxConstraints(minWidth: 320),
-//                    width: 180.0,
-//                    height: 120.0,
-                  child: OutlineButton(
-                    borderSide: BorderSide(color: Colors.lightGreen),
-                    highlightedBorderColor: Colors.red,
-                    color: Colors.amberAccent,
-                    shape: StadiumBorder(),
-                    child: Text('SIGNUP',style: TextStyle(fontSize: 25,foreground: Paint() ..color=Colors.black)),
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>SignUpPage()));
-                    },
-                  )
-              ),
-              Container(
-                padding: EdgeInsets.fromLTRB(150.0, 510.0, 0.0, 0.0),
-                child: Text(
-                    'OR SKIP',
-                    style: TextStyle(
-                        fontSize: 18.0, foreground: Paint() ..color=Colors.black38)
-                ),
-              ),
+
               Container(
                   padding: EdgeInsets.fromLTRB(50.0, 540.0, 0.0, 0.0),
                   constraints: BoxConstraints(minWidth: 320),
@@ -81,9 +62,9 @@ class landingPageState extends State<LandingPage>{
                     highlightedBorderColor: Colors.red,
                     color: Colors.amberAccent,
                     shape: StadiumBorder(),
-                    child: Text('LOGIN',style: TextStyle(fontSize: 25,foreground: Paint() ..color=Colors.black)),
+                    child: Text('LOGIN/SIGNUP',style: TextStyle(fontSize: 25,foreground: Paint() ..color=Colors.black)),
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginPage()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginPage(auth: widget.auth)));
                     },
                   )
               )

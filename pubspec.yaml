@@ -26,8 +26,9 @@ dependencies:
   cupertino_icons: ^0.1.2
   google_maps_flutter: ^0.5.25
   font_awesome_flutter: ^8.2.0
-  cloud_firestore: ^0.9.13
+  cloud_firestore: ^0.13.5
   geolocator: ^5.3.1
+  firebase_auth: ^0.16.0
 
 
 dev_dependencies:
@@ -56,6 +57,7 @@ flutter:
     - assets/images/carwash3.jpg
     - assets/images/carwash4.jpg
     - assets/images/pin.png
+    - assets/images/Anilogo.gif
 
   # To add assets to your application, add an assets section, like this:
   # assets:

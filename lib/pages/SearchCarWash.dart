@@ -4,23 +4,23 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class SearchCarWash extends StatelessWidget {
+//class SearchCarWash extends StatelessWidget {
+//  @override
+//  Widget build(BuildContext context) {
+//    return MaterialApp(
+//      debugShowCheckedModeBanner: false,
+//      title: 'Flutter Google Maps Demo',
+//      home: MapSample(),
+//    );
+//  }
+//}
+
+class SearchCarWash extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Google Maps Demo',
-      home: MapSample(),
-    );
-  }
+  State<SearchCarWash> createState() => MapSampleState();
 }
 
-class MapSample extends StatefulWidget {
-  @override
-  State<MapSample> createState() => MapSampleState();
-}
-
-class MapSampleState extends State<MapSample> {
+class MapSampleState extends State<SearchCarWash> {
   bool mapEnabled=false;
   var currentLocation;
   GoogleMapController mapController;
@@ -30,13 +30,14 @@ class MapSampleState extends State<MapSample> {
 
   void initState(){
     super.initState();
-    Geolocator().getCurrentPosition().then((currentlocation){
+    Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high).then((currentlocation){
       setState(() {
            currentLocation=currentlocation;
            mapEnabled=true;
-           populateCarWash();
+//           populateCarWash();
       });
     });
+    populateCarWash();
     setCustomMapPin();
   }
   void populateCarWash(){
@@ -80,7 +81,7 @@ class MapSampleState extends State<MapSample> {
 //                width: double.infinity,
                 child:mapEnabled ? GoogleMap(
                       onMapCreated: onMapCreated,
-                      mapType: MapType.normal,
+                      mapType: MapType.hybrid,
                       initialCameraPosition:CameraPosition(
                         target: LatLng(currentLocation.latitude,currentLocation.longitude),
                         zoom: 15.0,
@@ -105,7 +106,7 @@ class MapSampleState extends State<MapSample> {
     setState(() {
       mapController=controller;
       markers.add(Marker(
-        markerId: MarkerId('<MARKER_ID>'),
+        markerId: MarkerId('1111'),
         position: LatLng(currentLocation.latitude,currentLocation.longitude),
         icon: pinLocationIcon,
         infoWindow: InfoWindow(
@@ -113,6 +114,7 @@ class MapSampleState extends State<MapSample> {
         )
       )
       );
+      populateCarWash();
     });
  }
 
