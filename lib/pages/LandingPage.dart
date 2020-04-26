@@ -59,10 +59,10 @@ class landingPageState extends State<LandingPage>{
 //                    height: 120.0,
                   child: OutlineButton(
                     borderSide: BorderSide(color: Colors.white),
-                    highlightedBorderColor: Colors.red,
-                    color: Colors.amberAccent,
+                    highlightedBorderColor: Colors.blueAccent,
+                    color: Colors.blueAccent,
                     shape: StadiumBorder(),
-                    child: Text('LOGIN/SIGNUP',style: TextStyle(fontSize: 25,foreground: Paint() ..color=Colors.black)),
+                    child: Text('LOGIN/SIGNUP',style: TextStyle(fontSize: 25,foreground: Paint() ..color=Colors.lightBlue)),
                     onPressed: () {
                       Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginPage(auth: widget.auth)));
                     },

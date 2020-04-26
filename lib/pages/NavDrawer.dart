@@ -6,10 +6,10 @@ import 'package:carwash_locator/services/Authentication.dart';
 
 
 class NavDrawer extends StatelessWidget {
-  NavDrawer({this.auth});
-//  NavDrawer({this.auth,this.username});
+//  NavDrawer({this.auth});
+  NavDrawer({this.auth,this.username});
   final BaseAuth auth;
-//  String username;
+  String username;
 
     @override
   Widget build(BuildContext context) {
@@ -18,19 +18,31 @@ class NavDrawer extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
-            child: Text(
+            child: Column(
+              children: <Widget>[
+              Text(
               'Car Wash Locator',
-              style: TextStyle(color: Colors.white, fontSize: 25),
+              style: TextStyle(color: Colors.white, fontSize: 27),
             ),
+//                Text(
+//                  username,
+//                  style: TextStyle(color: Colors.blueAccent, fontSize: 25),
+//                ),
+              ],
+            ),
+//            child: Text(
+//              'Car Wash Locator',
+//              style: TextStyle(color: Colors.white, fontSize: 25),
+//            ),
             decoration: BoxDecoration(
                 color: Colors.blueAccent,
                 image: DecorationImage(
                     fit: BoxFit.fill,
-                    image: AssetImage('assets/images/carwash1.jpg'))),
+                    image: AssetImage('assets/images/carwash3.jpg'))),
           ),
           ListTile(
-            leading: Icon(Icons.verified_user),
-            title: Text('Profile'),
+            leading: Icon(Icons.account_circle,size: 50,),
+            title: Text(username,style: TextStyle(fontSize: 20),),
             onTap: () => {Navigator.of(context).pop()},
           ),
           ListTile(
@@ -53,7 +65,7 @@ class NavDrawer extends StatelessWidget {
             onTap: () async {
                 await auth.signOut();
               Navigator.of(context).pushReplacement(
-                  new MaterialPageRoute(builder: (BuildContext context) => new LandingPage())
+                  new MaterialPageRoute(builder: (BuildContext context) => new LandingPage(auth: this.auth,))
               );
             }
           ),

@@ -1,33 +1,46 @@
 import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../listModel/ReviewModel.dart';
 import 'StarRating.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:carwash_locator/services/Authentication.dart';
+
 
 class MyReviews extends StatefulWidget{
 
    final String shopid;
 
   MyReviews({Key key, @required this.shopid}) : super(key: key);
-
   @override
   _MyReviewsState createState() => _MyReviewsState();
-
 }
 
 class _MyReviewsState extends State<MyReviews> {
 
   double rating = 3.0;
   String name,description,date;
+  String uid;
+  FirebaseUser user;
 
-
-  _MyReviewsState(){}
+  _MyReviewsState(){
+    super.initState();
+    getUserData();
+  }
 
   getDescription(description){
     this.description = description;
   }
+
+  Future<void> getUserData() async {
+    FirebaseUser userdata= await FirebaseAuth.instance.currentUser();
+    setState(() {
+          user=userdata;
+    });
+  }
+
 
   List<ReviewModel> reviews = [
 
@@ -38,7 +51,6 @@ class _MyReviewsState extends State<MyReviews> {
   ];
 
   createData() {
-
     DateTime now = new DateTime.now();
     DateTime date = new DateTime(now.year, now.month, now.day);
     String dateString = date.toString();
@@ -47,7 +59,7 @@ class _MyReviewsState extends State<MyReviews> {
       "name" : "user",
       "description": description,
       "rating": rating,
-      "id": "user123",
+      "id": user.uid,
       "date": dateString,
       "shopid": widget.shopid
     };

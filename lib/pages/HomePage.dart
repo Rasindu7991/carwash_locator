@@ -15,12 +15,12 @@ class HomePage extends StatefulWidget{
   HomePage({this.auth});
 
   final BaseAuth auth;
-  String userName;
   State createState()=>homePageState();
 }
 
 
 class homePageState extends State<HomePage>{
+  String userName;
   int _selectedPage=0;
   final _pageOptions=[
     CarWashList(),
@@ -32,13 +32,16 @@ class homePageState extends State<HomePage>{
   void initState() {
     super.initState();
     Timer(Duration(seconds: 5), ()=>print("Timeout"));
-//    setUserName();
+    getUserName();
   }
-//
-//  setUserName() async {
-//    FirebaseUser user = await FirebaseAuth.instance.currentUser();
-//    widget.userName=user.uid.toString();
-//  }
+
+
+  Future<void> getUserName() async {
+    FirebaseUser userdata= await FirebaseAuth.instance.currentUser();
+    setState(() {
+      userName=userdata.email;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +56,7 @@ class homePageState extends State<HomePage>{
          title: Text('Carwash Locator'),
        ),
        body: _pageOptions[_selectedPage],
-       drawer: NavDrawer(auth : widget.auth),
+       drawer: NavDrawer(auth : widget.auth, username: userName,),
        bottomNavigationBar: BottomNavigationBar(
          currentIndex: _selectedPage,
          onTap: (int index){
