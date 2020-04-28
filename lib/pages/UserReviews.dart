@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../listModel/ReviewModel.dart';
 import 'StarRating.dart';
@@ -17,7 +18,8 @@ class _UserReviewsState extends State<UserReviews> {
 
   double rating = 3.0;
   String name,description,date;
-  String userId = "user123";
+  String userId;
+  FirebaseUser user;
 
   List<ReviewModel> reviews = [
 
@@ -27,7 +29,17 @@ class _UserReviewsState extends State<UserReviews> {
     ReviewModel(name: 'catanddog', description: "The app is okay but could use more features and improvments",rating: 3, date: '2019-06-15'),
   ];
 
-  _UserReviewsState(){}
+  _UserReviewsState(){
+    super.initState();
+    getUserData();
+  }
+
+  Future<void> getUserData() async {
+    FirebaseUser userdata= await FirebaseAuth.instance.currentUser();
+    setState(() {
+      user=userdata;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +54,7 @@ class _UserReviewsState extends State<UserReviews> {
           elevation: 0,
         ),
         body:StreamBuilder(
-            stream: Firestore.instance.collection('reviews').where("id", isEqualTo: userId).snapshots(),
+            stream: Firestore.instance.collection('reviews').where("id", isEqualTo: user.uid).snapshots(),
             builder: (context, snapshot){
 //            if(!snapshot.hasData){
 //              return Text('Loading');
@@ -55,8 +67,8 @@ class _UserReviewsState extends State<UserReviews> {
                           itemCount: snapshot.data.documents.length,
                           itemBuilder: (context, index) {
                             DocumentSnapshot myReviews = snapshot.data.documents[index];
-                            int ratingdb = myReviews['rating'].toInt();
-                            FullScreenDialog _myDialog = new FullScreenDialog(reviews: myReviews,);
+                            double ratingdb = myReviews['rating'].toDouble();
+                            FullScreenDialog _myDialog = new FullScreenDialog(reviews: myReviews,rating: ratingdb,);
                             return Padding(
                               padding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 4.0),
                               child: Card(
@@ -88,7 +100,7 @@ class _UserReviewsState extends State<UserReviews> {
                                               children: <Widget>[
                                                 Padding(
                                                   padding: EdgeInsets.only(right: 8.0),
-                                                  child: Row(children: _stars((ratingdb))),
+                                                  child: Row(children: _stars((ratingdb.toInt()))),
                                                 ),
 
                                                 Text('${myReviews['date']}')
@@ -166,8 +178,9 @@ class FullScreenDialog extends StatefulWidget {
   String _skillThree = "any skills yet";
 
   final  DocumentSnapshot reviews;
+   double rating ;
 
-  FullScreenDialog({Key key, @required this.reviews}) : super(key: key);
+  FullScreenDialog({Key key, @required this.reviews,this.rating}) : super(key: key);
 
 
   @override
@@ -177,7 +190,7 @@ class FullScreenDialog extends StatefulWidget {
 class FullScreenDialogState extends State<FullScreenDialog> {
 
 
-   double rating = 4.0;
+
 
   @override
   Widget build(BuildContext context) {
@@ -191,8 +204,8 @@ class FullScreenDialogState extends State<FullScreenDialog> {
             Padding(
               padding: EdgeInsets.fromLTRB(115.0, 25.0, 0.0, 10.0),
               child: StarRating(
-                rating: rating ,  //widget.reviews['rating'].toDouble()
-                onRatingChanged: (rating) => setState(() => this.rating = rating),
+                rating: widget.rating ,  //widget.reviews['rating'].toDouble()
+                onRatingChanged: (rating) => setState(() => widget.rating = rating),
               ),
             ),
             new TextField(controller: _skillTwoController,keyboardType: TextInputType.multiline,maxLines: null),
@@ -202,7 +215,7 @@ class FullScreenDialogState extends State<FullScreenDialog> {
                 new Expanded(child: new RaisedButton(onPressed: () {
 
                   String description = _skillTwoController.text;
-                  updateData(widget.reviews, description, rating);
+                  updateData(widget.reviews, description, widget.rating);
                   Navigator.pop(context);
                 }, child: new Text("Save"),))
               ],
