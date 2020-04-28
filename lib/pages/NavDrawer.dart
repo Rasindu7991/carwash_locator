@@ -46,11 +46,6 @@ class NavDrawer extends StatelessWidget {
             onTap: () => {Navigator.of(context).pop()},
           ),
           ListTile(
-            leading: Icon(Icons.settings),
-            title: Text('Settings'),
-            onTap: () => {Navigator.of(context).pop()},
-          ),
-          ListTile(
             leading: Icon(Icons.border_color),
             title: Text('About'),
             onTap: (){
@@ -62,15 +57,43 @@ class NavDrawer extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.exit_to_app),
             title: Text('Logout'),
-            onTap: () async {
-                await auth.signOut();
-              Navigator.of(context).pushReplacement(
-                  new MaterialPageRoute(builder: (BuildContext context) => new LandingPage(auth: this.auth,))
-              );
+            onTap: (){
+                showAlertDialog(context);
             }
           ),
         ],
       ),
     );
   }
+  showAlertDialog(BuildContext context){
+      Widget yesButton= FlatButton(
+        child: Text('Yes'),
+        onPressed: () async {
+          await auth.signOut();
+          Navigator.of(context, rootNavigator: true).pop('dialog');
+          Navigator.of(context).pushReplacement(
+              new MaterialPageRoute(builder: (BuildContext context) => new LandingPage(auth: this.auth,))
+          );
+        },
+      );
+      Widget noButton= FlatButton(
+        child: Text('No'),
+        onPressed: (){
+          Navigator.of(context, rootNavigator: true).pop('dialog');
+        },
+      );
+      AlertDialog alert =AlertDialog(
+        title: Text('Confirmation'),
+        content: Text('Are you want to sign out?'),
+        actions: <Widget>[yesButton,noButton],
+      );
+      showDialog(
+        context: context,
+        builder: (BuildContext bcontext){
+          return alert;
+        },
+      );
+    }
+
+
 }

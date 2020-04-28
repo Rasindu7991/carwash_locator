@@ -25,6 +25,8 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
   google_maps_flutter: ^0.5.25
+  flutter_polyline_points: ^0.1.0
+  permission: ^0.1.7
   font_awesome_flutter: ^8.2.0
   cloud_firestore: ^0.13.5
   geolocator: ^5.3.1
@@ -58,6 +60,9 @@ flutter:
     - assets/images/carwash4.jpg
     - assets/images/pin.png
     - assets/images/Anilogo.gif
+    - assets/images/destination_map_marker.png
+    - assets/images/driving_pin.png
+    - assets/images/background.jpg
 
   # To add assets to your application, add an assets section, like this:
   # assets:

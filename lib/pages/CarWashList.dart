@@ -1,3 +1,4 @@
+import 'package:carwash_locator/pages/CarwashDirection.dart';
 import 'package:carwash_locator/pages/MyReviews.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -175,7 +176,7 @@ class _ShopDescription extends StatelessWidget {
                       child: RaisedButton(
                         child: Text("Directions", style: TextStyle(color:  Colors.white),),
                         onPressed: () {
-
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>CarwashDirection(shopid:shopid,shopname:shopName,)));
                         },
                         color: Colors.blue,
                       ),

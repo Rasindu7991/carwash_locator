@@ -141,7 +141,7 @@ class _LoginSignupPageState extends State<LoginPage> {
   Widget _showForm() {
     return new Container(
       color: Colors.grey[400],
-        padding: EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(14.0),
         child: new Form(
           key: _formKey,
           child: new ListView(
@@ -231,11 +231,15 @@ class _LoginSignupPageState extends State<LoginPage> {
   }
 
   Widget showSecondaryButton() {
-    return new FlatButton(
+    return new RaisedButton(
+        shape: new RoundedRectangleBorder(
+            borderRadius: new BorderRadius.circular(30.0)),
+        color: Colors.green,
         child: new Text(
             _isLoginForm ? 'Create an account' : 'Have an account? Sign in',
-            style: new TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300)),
+            style: new TextStyle(fontSize: 20.0, fontWeight: FontWeight.w300,color: Colors.white)),
         onPressed: toggleFormMode);
+
   }
 
   Widget showPrimaryButton() {

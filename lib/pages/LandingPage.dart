@@ -26,7 +26,7 @@ class landingPageState extends State<LandingPage>{
         constraints: BoxConstraints.expand(),
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("assets/images/carwash.jpg"),
+            image: AssetImage("assets/images/background.jpg"),
             fit: BoxFit.fill,
           ),
         ),
@@ -34,21 +34,24 @@ class landingPageState extends State<LandingPage>{
           child: Stack(
             children: <Widget>[
               Container(
-                padding: EdgeInsets.fromLTRB(60.0, 50.0, 0.0, 0.0),
-                child: Text(
-                    'Car Wash Locator v.1.0',
-                    style: TextStyle(
-                        fontSize: 40.0, fontWeight: FontWeight.bold, foreground: Paint() ..color=Colors.black)
+                padding: EdgeInsets.fromLTRB(0.0, 50.0, 0.0, 0.0),
+                child: RichText(
+                  textAlign: TextAlign.center,
+                  text: TextSpan(
+                    text: "CARWASH LOCATOR",
+                    style: TextStyle(color: Colors.blue,fontSize: 40.0),
+                  ),
                 ),
               ),
+
               Container(
-                padding: EdgeInsets.fromLTRB(0.0, 160.0, 0.0, 0.0),
+                padding: EdgeInsets.fromLTRB(0.0, 135.0, 0.0, 0.0),
                 child:
                 new Divider(
-                  color: Colors.black,
-                  indent: 130,
-                  endIndent: 130,
-                  thickness: 2,
+                  color: Colors.white70,
+                  indent: 110,
+                  endIndent: 110,
+                  thickness: 3,
                 ),
               ),
 
@@ -62,7 +65,7 @@ class landingPageState extends State<LandingPage>{
                     highlightedBorderColor: Colors.blueAccent,
                     color: Colors.blueAccent,
                     shape: StadiumBorder(),
-                    child: Text('LOGIN/SIGNUP',style: TextStyle(fontSize: 25,foreground: Paint() ..color=Colors.lightBlue)),
+                    child: Text('LOGIN/SIGNUP',style: TextStyle(fontSize: 25,foreground: Paint() ..color=Colors.white)),
                     onPressed: () {
                       Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginPage(auth: widget.auth)));
                     },

@@ -4,17 +4,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-//class SearchCarWash extends StatelessWidget {
-//  @override
-//  Widget build(BuildContext context) {
-//    return MaterialApp(
-//      debugShowCheckedModeBanner: false,
-//      title: 'Flutter Google Maps Demo',
-//      home: MapSample(),
-//    );
-//  }
-//}
-
 class SearchCarWash extends StatefulWidget {
   @override
   State<SearchCarWash> createState() => MapSampleState();
