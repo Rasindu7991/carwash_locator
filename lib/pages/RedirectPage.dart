@@ -11,14 +11,14 @@ enum AuthStatus{
   LOGGED_IN
 }
 
-class SplashScreen extends StatefulWidget{
+class RedirectPage extends StatefulWidget{
   final BaseAuth auth;
-  SplashScreen({this.auth});
-  State createState()=>SplashScreenState();
+  RedirectPage({this.auth});
+  State createState()=>RedirectPageState();
 }
 
 
-class SplashScreenState extends State<SplashScreen>{
+class RedirectPageState extends State<RedirectPage>{
   AuthStatus authStatus = AuthStatus.NOT_DETERMINED;
   String _userId = "";
 
@@ -56,42 +56,10 @@ class SplashScreenState extends State<SplashScreen>{
   }
   Widget buildWaitingScreen() {
       return Scaffold(
-          body: Stack(
-            fit: StackFit.expand,
-            children: <Widget>[
-              Container(
-                decoration: BoxDecoration(color: Colors.blueAccent),
-              ),
+          body:
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  Expanded(
-                    flex: 2,
-                    child: Container(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          CircleAvatar(
-                            backgroundColor: Colors.white,
-                            radius: 50.0,
-                            child: Icon(
-                              Icons.directions_car,
-                              color: Colors.blue,
-                              size: 50.0,
-                            ),
-                          ),
-                          Padding(padding: EdgeInsets.only(top: 10.0),
-                          ),
-                          Text(
-                            "CarWash Locator v.1",
-                            style: TextStyle(color: Colors.white,
-                                fontSize: 24.0,
-                                fontWeight: FontWeight.bold),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
                   Expanded(
                     flex: 1,
                     child: Column(
@@ -101,20 +69,11 @@ class SplashScreenState extends State<SplashScreen>{
                         Padding(
                           padding: EdgeInsets.only(top: 20.0),
                         ),
-                        Text(
-                          "one click! locate car wash!!",
-                          style: TextStyle(color: Colors.white,
-                              fontSize: 18.0,
-                              fontWeight: FontWeight.bold
-                          ),
-                        )
                       ],
                     ),
                   )
                 ],
               )
-            ],
-          )
       );
   }
 

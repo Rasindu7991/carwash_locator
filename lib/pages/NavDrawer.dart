@@ -1,6 +1,4 @@
 import 'package:carwash_locator/pages/LandingPage.dart';
-import 'package:carwash_locator/pages/LoginPage.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:carwash_locator/services/Authentication.dart';
 
@@ -44,15 +42,6 @@ class NavDrawer extends StatelessWidget {
             leading: Icon(Icons.account_circle,size: 50,),
             title: Text(username,style: TextStyle(fontSize: 20),),
             onTap: () => {Navigator.of(context).pop()},
-          ),
-          ListTile(
-            leading: Icon(Icons.border_color),
-            title: Text('About'),
-            onTap: (){
-              Navigator.of(context).pushReplacement(
-                  new MaterialPageRoute(builder: (BuildContext context) => new LoginPage())
-              );
-            },
           ),
           ListTile(
             leading: Icon(Icons.exit_to_app),
