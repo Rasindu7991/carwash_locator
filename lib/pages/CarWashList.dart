@@ -40,7 +40,7 @@ class _CarWashListState extends State<CarWashList> {
           }
           else{
             return ListView.builder(
-                itemCount: locations.length,
+                itemCount: snapshot.data.documents.length,
                 itemBuilder: (context, index) {
                   DocumentSnapshot myShopList = snapshot.data.documents[index];
                   return Padding(
