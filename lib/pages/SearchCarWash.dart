@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
@@ -12,8 +13,11 @@ class SearchCarWash extends StatefulWidget {
 class MapSampleState extends State<SearchCarWash> {
   bool mapEnabled=false;
   var currentLocation;
+  String searchLocation;
+  LatLng searchLocationLatLng;
+  double distanceInMeters;
   GoogleMapController mapController;
-  BitmapDescriptor pinLocationIcon;
+  BitmapDescriptor pinLocationIcon,pinSearchLocationIcon;
   List<Marker> markers = <Marker>[];
   var carWashLocation=[];
 
@@ -26,12 +30,12 @@ class MapSampleState extends State<SearchCarWash> {
 //           populateCarWash();
       });
     });
-    populateCarWash();
+//    populateCarWash();
     setCustomMapPin();
   }
-  void populateCarWash(){
+  void populateCarWash() async{
     carWashLocation=[];
-    Firestore.instance.collection('markers').getDocuments().then((docs){
+    await Firestore.instance.collection('markers').getDocuments().then((docs){
         if(docs.documents.isNotEmpty){
           for(int i=0;i<docs.documents.length;++i){
               carWashLocation.add(docs.documents[i].data);
@@ -55,42 +59,101 @@ class MapSampleState extends State<SearchCarWash> {
     pinLocationIcon = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(devicePixelRatio: 2.5),
         'assets/images/pin.png');
+    pinSearchLocationIcon=await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 2.5),
+        'assets/images/signs_pin.png');
   }
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      body: Column(
+      body: Stack(
         children: <Widget>[
-          Stack(
+
+          mapEnabled ? Stack(
             children: <Widget>[
-              Container(
-                height: MediaQuery.of(context).size.height - 130.0,
-//                width: double.infinity,
-                child:mapEnabled ? GoogleMap(
-                      onMapCreated: onMapCreated,
-                      mapType: MapType.hybrid,
-                      initialCameraPosition:CameraPosition(
-                        target: LatLng(currentLocation.latitude,currentLocation.longitude),
-                        zoom: 15.0,
+              GoogleMap(
+                onMapCreated: onMapCreated,
+                mapType: MapType.hybrid,
+                initialCameraPosition:CameraPosition(
+                  target: LatLng(currentLocation.latitude,currentLocation.longitude),
+                  zoom: 15.0,
 //                        bearing: 192.8334901395799,
 //                        tilt: 59.440717697143555,
+                ),
+                markers: Set<Marker>.of(markers),
+              ),
+              Positioned(
+                top: 30.0,
+                right: 15.0,
+                left: 15.0,
+                child: Container(
+                    height: 50.0,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                        color: Colors.white70
+                    ),
+                    child: TextField(
+                      decoration: InputDecoration(
+                          hintText: 'Search Car Wash',
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.only(left: 15.0,top: 15.0),
+                          suffixIcon: IconButton(
+                            icon: Icon(Icons.search),
+                            color: Colors.indigo[400],
+                            onPressed: viewSearchLocation,
+                            iconSize: 33.0,
+                          )
                       ),
-                      markers: Set<Marker>.of(markers),
-                ) : Center(
+                      onChanged: (val){
+                        setState(() {
+                          searchLocation=val;
+                        });
+                      },
+                    )
+                ),
+              ),
+            ],
+          )
+          : Center(
                   child:
                   Text('Loading Please Wait',style: TextStyle(
                     fontSize: 20.0,
                   ),),
                 ),
-              )
-            ],
-          )
-        ],
-      ),
-    );
+    ]));
   }
+
+  viewSearchLocation() async{
+    await Geolocator().placemarkFromAddress(searchLocation).then((result){
+      searchLocationLatLng=LatLng(result[0].position.latitude, result[0].position.longitude);
+      mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+          target:
+          LatLng(result[0].position.latitude, result[0].position.longitude),
+          zoom: 10.0)));
+    });
+     setState(() {
+      markers.add(Marker(
+          markerId: MarkerId('1122'),
+          position: LatLng(searchLocationLatLng.latitude, searchLocationLatLng.longitude),
+          icon: pinSearchLocationIcon,
+          infoWindow: InfoWindow(
+            title: 'Search Location',
+          )
+      ));
+    });
+    await mapController.showMarkerInfoWindow(MarkerId('1122'));
+    FocusScope.of(context).requestFocus(new FocusNode());
+     distanceInMeters = await Geolocator().distanceBetween(currentLocation.latitude, currentLocation.longitude, searchLocationLatLng.latitude, searchLocationLatLng.longitude)/1000;
+     distanceInMeters=distanceInMeters.roundToDouble();
+    Scaffold.of(context).showSnackBar(SnackBar(
+      content: Text('Distance from Your Location '+distanceInMeters.toString()+' KM'),
+      duration: Duration(seconds: 3),
+    ));
+  }
+
  void onMapCreated(controller){
     setState(() {
       mapController=controller;
@@ -103,9 +166,8 @@ class MapSampleState extends State<SearchCarWash> {
         )
       )
       );
-      populateCarWash();
+//      populateCarWash();
     });
  }
-
 
 }

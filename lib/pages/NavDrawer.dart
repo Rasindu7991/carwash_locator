@@ -20,7 +20,7 @@ class NavDrawer extends StatelessWidget {
               children: <Widget>[
               Text(
               'Car Wash Locator',
-              style: TextStyle(color: Colors.white, fontSize: 27),
+              style: TextStyle(color: Colors.black, fontSize: 27),
             ),
 //                Text(
 //                  username,
@@ -36,16 +36,16 @@ class NavDrawer extends StatelessWidget {
                 color: Colors.blueAccent,
                 image: DecorationImage(
                     fit: BoxFit.fill,
-                    image: AssetImage('assets/images/carwash3.jpg'))),
+                    image: AssetImage('assets/images/navdrawerimage.jpg'))),
           ),
           ListTile(
-            leading: Icon(Icons.account_circle,size: 50,),
+            leading: CircleAvatar(backgroundImage: AssetImage('assets/images/user.png'),radius: 26, backgroundColor: Colors.transparent),
             title: Text(username,style: TextStyle(fontSize: 20),),
             onTap: () => {Navigator.of(context).pop()},
           ),
           ListTile(
-            leading: Icon(Icons.exit_to_app),
-            title: Text('Logout'),
+            leading: CircleAvatar(backgroundImage: AssetImage('assets/images/logout.png'),radius: 26, backgroundColor: Colors.transparent),
+            title: Text('Logout',style: TextStyle(fontSize: 20)),
             onTap: (){
                 showAlertDialog(context);
             }

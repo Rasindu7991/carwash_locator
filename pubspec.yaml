@@ -49,11 +49,7 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   assets:
-    - assets/images/carwash.jpg
     - assets/images/logo.jpg
-    - assets/images/signup.jpg
-    - assets/images/facebook48.png
-    - assets/images/google48.png
     - assets/images/carwash1.jpg
     - assets/images/carwash2.jpg
     - assets/images/carwash3.jpg
@@ -63,6 +59,10 @@ flutter:
     - assets/images/destination_map_marker.png
     - assets/images/driving_pin.png
     - assets/images/background.jpg
+    - assets/images/signs_pin.png
+    - assets/images/navdrawerimage.jpg
+    - assets/images/user.png
+    - assets/images/logout.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

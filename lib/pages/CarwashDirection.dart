@@ -34,7 +34,7 @@ class MapSampleState extends State<CarwashDirection> {
   // this is the key object - the PolylinePoints
   // which generates every polyline between start and finish
   PolylinePoints polylinePoints = PolylinePoints();
-  String googleAPIKey = "Put the Api Key Here.-->in secrets.property files";
+  String googleAPIKey = "put the google maps api here!!";
   // for my custom icons
   BitmapDescriptor sourceIcon;
   BitmapDescriptor destinationIcon;
@@ -60,8 +60,8 @@ class MapSampleState extends State<CarwashDirection> {
         'assets/images/destination_map_marker.png');
   }
 
-  void getShopLocation(){
-    Firestore.instance.collection('markers').where('id',isEqualTo: widget.shopid).getDocuments().then((docs){
+  void getShopLocation() async{
+      await Firestore.instance.collection('markers').where('id',isEqualTo: widget.shopid).getDocuments().then((docs){
       if(docs.documents.isNotEmpty){
             docs.documents.forEach((result){
               destinationLocation = LatLng(result.data['location'].latitude,result.data['location'].longitude);
