@@ -1,15 +1,19 @@
+/*
+IT17006644 - DAYASENA B.R.D
+REFERENCE - https://medium.com/flutter-community/flutter-vi-navigation-drawer-flutter-1-0-3a05e09b0db9
+ */
 import 'package:carwash_locator/pages/LandingPage.dart';
 import 'package:flutter/material.dart';
 import 'package:carwash_locator/services/Authentication.dart';
 
-
 class NavDrawer extends StatelessWidget {
 //  NavDrawer({this.auth});
-  NavDrawer({this.auth,this.username});
+  NavDrawer({this.auth, this.username});
+
   final BaseAuth auth;
   String username;
 
-    @override
+  @override
   Widget build(BuildContext context) {
     return Drawer(
       child: ListView(
@@ -18,20 +22,12 @@ class NavDrawer extends StatelessWidget {
           DrawerHeader(
             child: Column(
               children: <Widget>[
-              Text(
-              'Car Wash Locator',
-              style: TextStyle(color: Colors.black, fontSize: 27),
-            ),
-//                Text(
-//                  username,
-//                  style: TextStyle(color: Colors.blueAccent, fontSize: 25),
-//                ),
+                Text(
+                  'Car Wash Locator',
+                  style: TextStyle(color: Colors.black, fontSize: 27),
+                ),
               ],
             ),
-//            child: Text(
-//              'Car Wash Locator',
-//              style: TextStyle(color: Colors.white, fontSize: 25),
-//            ),
             decoration: BoxDecoration(
                 color: Colors.blueAccent,
                 image: DecorationImage(
@@ -39,50 +35,58 @@ class NavDrawer extends StatelessWidget {
                     image: AssetImage('assets/images/navdrawerimage.jpg'))),
           ),
           ListTile(
-            leading: CircleAvatar(backgroundImage: AssetImage('assets/images/user.png'),radius: 26, backgroundColor: Colors.transparent),
-            title: Text(username,style: TextStyle(fontSize: 20),),
+            leading: CircleAvatar(
+                backgroundImage: AssetImage('assets/images/user.png'),
+                radius: 26,
+                backgroundColor: Colors.transparent),
+            title: Text(
+              username,
+              style: TextStyle(fontSize: 20),
+            ),
             onTap: () => {Navigator.of(context).pop()},
           ),
           ListTile(
-            leading: CircleAvatar(backgroundImage: AssetImage('assets/images/logout.png'),radius: 26, backgroundColor: Colors.transparent),
-            title: Text('Logout',style: TextStyle(fontSize: 20)),
-            onTap: (){
+              leading: CircleAvatar(
+                  backgroundImage: AssetImage('assets/images/logout.png'),
+                  radius: 26,
+                  backgroundColor: Colors.transparent),
+              title: Text('Logout', style: TextStyle(fontSize: 20)),
+              onTap: () {
                 showAlertDialog(context);
-            }
-          ),
+              }),
         ],
       ),
     );
   }
-  showAlertDialog(BuildContext context){
-      Widget yesButton= FlatButton(
-        child: Text('Yes'),
-        onPressed: () async {
-          await auth.signOut();
-          Navigator.of(context, rootNavigator: true).pop('dialog');
-          Navigator.of(context).pushReplacement(
-              new MaterialPageRoute(builder: (BuildContext context) => new LandingPage(auth: this.auth,))
-          );
-        },
-      );
-      Widget noButton= FlatButton(
-        child: Text('No'),
-        onPressed: (){
-          Navigator.of(context, rootNavigator: true).pop('dialog');
-        },
-      );
-      AlertDialog alert =AlertDialog(
-        title: Text('Confirmation'),
-        content: Text('Are you want to sign out?'),
-        actions: <Widget>[yesButton,noButton],
-      );
-      showDialog(
-        context: context,
-        builder: (BuildContext bcontext){
-          return alert;
-        },
-      );
-    }
 
-
+  showAlertDialog(BuildContext context) {
+    Widget yesButton = FlatButton(
+      child: Text('Yes'),
+      onPressed: () async {
+        await auth.signOut();
+        Navigator.of(context, rootNavigator: true).pop('dialog');
+        Navigator.of(context).pushReplacement(new MaterialPageRoute(
+            builder: (BuildContext context) => new LandingPage(
+                  auth: this.auth,
+                )));
+      },
+    );
+    Widget noButton = FlatButton(
+      child: Text('No'),
+      onPressed: () {
+        Navigator.of(context, rootNavigator: true).pop('dialog');
+      },
+    );
+    AlertDialog alert = AlertDialog(
+      title: Text('Confirmation'),
+      content: Text('Are you want to sign out?'),
+      actions: <Widget>[yesButton, noButton],
+    );
+    showDialog(
+      context: context,
+      builder: (BuildContext bcontext) {
+        return alert;
+      },
+    );
+  }
 }

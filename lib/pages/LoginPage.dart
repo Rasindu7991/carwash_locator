@@ -1,5 +1,4 @@
 import 'package:carwash_locator/pages/HomePage.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:carwash_locator/services/Authentication.dart';
 
@@ -44,9 +43,13 @@ class _LoginSignupPageState extends State<LoginPage> {
       try {
         if (_isLoginForm) {
           userId = await widget.auth.signIn(_email, _password);
-//          AuthResult result = await FirebaseAuth.instance.signInWithEmailAndPassword(email: _email, password: _password);
           print('Signed in: $userId');
-          Navigator.push(context, MaterialPageRoute(builder: (context)=> HomePage(auth: widget.auth,)));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => HomePage(
+                        auth: widget.auth,
+                      )));
         } else {
           userId = await widget.auth.signUp(_email, _password);
           //widget.auth.sendEmailVerification();
@@ -115,32 +118,9 @@ class _LoginSignupPageState extends State<LoginPage> {
     );
   }
 
-//  void _showVerifyEmailSentDialog() {
-//    showDialog(
-//      context: context,
-//      builder: (BuildContext context) {
-//        // return object of type Dialog
-//        return AlertDialog(
-//          title: new Text("Verify your account"),
-//          content:
-//              new Text("Link to verify account has been sent to your email"),
-//          actions: <Widget>[
-//            new FlatButton(
-//              child: new Text("Dismiss"),
-//              onPressed: () {
-//                toggleFormMode();
-//                Navigator.of(context).pop();
-//              },
-//            ),
-//          ],
-//        );
-//      },
-//    );
-//  }
-
   Widget _showForm() {
     return new Container(
-      color: Colors.grey[400],
+        color: Colors.grey[400],
         padding: EdgeInsets.all(14.0),
         child: new Form(
           key: _formKey,
@@ -180,14 +160,13 @@ class _LoginSignupPageState extends State<LoginPage> {
       tag: 'hero',
       child: Padding(
         padding: EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 0.0),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(20.0),
-            child: Image.asset(
-              'assets/images/Anilogo.gif',
-
-              fit: BoxFit.fill,
-            ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(20.0),
+          child: Image.asset(
+            'assets/images/Anilogo.gif',
+            fit: BoxFit.fill,
           ),
+        ),
       ),
     );
   }
@@ -237,9 +216,11 @@ class _LoginSignupPageState extends State<LoginPage> {
         color: Colors.green,
         child: new Text(
             _isLoginForm ? 'Create an account' : 'Have an account? Sign in',
-            style: new TextStyle(fontSize: 20.0, fontWeight: FontWeight.w300,color: Colors.white)),
+            style: new TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.w300,
+                color: Colors.white)),
         onPressed: toggleFormMode);
-
   }
 
   Widget showPrimaryButton() {
