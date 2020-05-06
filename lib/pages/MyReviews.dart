@@ -1,3 +1,5 @@
+//IT17051644- ILLANDARA T.S
+//View shop Reviews and add new review
 import 'dart:ffi';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -16,6 +18,7 @@ class MyReviews extends StatefulWidget {
 }
 
 class _MyReviewsState extends State<MyReviews> {
+  //initializing variables
   double rating = 3.0;
   String name, description, date;
   String uid;
@@ -29,7 +32,7 @@ class _MyReviewsState extends State<MyReviews> {
   getDescription(description) {
     this.description = description;
   }
-
+//get current user data
   Future<void> getUserData() async {
     FirebaseUser userdata = await FirebaseAuth.instance.currentUser();
     setState(() {
@@ -37,31 +40,7 @@ class _MyReviewsState extends State<MyReviews> {
     });
   }
 
-  List<ReviewModel> reviews = [
-    ReviewModel(
-        name: 'Hohn Wick',
-        description: "Great app.Performance is very good",
-        rating: 4,
-        date: '2019-08-21'),
-    ReviewModel(
-        name: 'soup112',
-        description:
-            "Bad App. slow and low performernce.Takes too much battery",
-        rating: 2,
-        date: '2019-07-21'),
-    ReviewModel(
-        name: 'Ninjas',
-        description: "Great app.Can Manage task very easily. Low cost too.",
-        rating: 5,
-        date: '2019-08-25'),
-    ReviewModel(
-        name: 'catanddog',
-        description:
-            "The app is okay but could use more features and improvments",
-        rating: 3,
-        date: '2019-06-15'),
-  ];
-
+//function to create new shop review
   createData() {
     DateTime now = new DateTime.now();
     DateTime date = new DateTime(now.year, now.month, now.day);
@@ -93,11 +72,11 @@ class _MyReviewsState extends State<MyReviews> {
           centerTitle: true,
           elevation: 0,
         ),
-        body: StreamBuilder(
+        body: StreamBuilder(                   //Stream builder is used to initialize firebase instance
             stream: Firestore.instance
                 .collection('reviews')
                 .where("shopid", isEqualTo: widget.shopid)
-                .snapshots(),
+                .snapshots(),                                //retrieve shop reviews of selected shop from db
             builder: (context, snapshot) {
 //            if(!snapshot.hasData){
 //              return Text('Loading');
@@ -110,15 +89,15 @@ class _MyReviewsState extends State<MyReviews> {
                   child: ListView.builder(
                       scrollDirection: Axis.vertical,
                       shrinkWrap: true,
-                      itemCount: snapshot.data.documents.length,
+                      itemCount: snapshot.data.documents.length,           //snapshot count
                       itemBuilder: (context, index) {
-                        DocumentSnapshot myReviews =
+                        DocumentSnapshot myReviews =                      //snapshots of each index
                             snapshot.data.documents[index];
-                        int ratingdb = myReviews['rating'].toInt();
+                        int ratingdb = myReviews['rating'].toInt();           //convert rating from db to int
                         return Padding(
                           padding: const EdgeInsets.symmetric(
                               vertical: 1.0, horizontal: 4.0),
-                          child: Card(
+                          child: Card(                                            //card view for each shop review
                               child: Padding(
                                   padding: EdgeInsets.all(8.0),
                                   child: Column(
@@ -172,13 +151,13 @@ class _MyReviewsState extends State<MyReviews> {
                             Padding(
                               padding:
                                   EdgeInsets.fromLTRB(135.0, 25.0, 0.0, 0.0),
-                              child: StarRating(
+                              child: StarRating(                                     //Rate the shop
                                 rating: rating,
                                 onRatingChanged: (rating) =>
                                     setState(() => this.rating = rating),
                               ),
                             ),
-                            TextField(
+                            TextField(                                              //write a review
                               onChanged: (String description) {
                                 getDescription(description);
                               },
@@ -186,7 +165,7 @@ class _MyReviewsState extends State<MyReviews> {
                                   border: InputBorder.none,
                                   hintText: 'Write Review'),
                             ),
-                            Padding(
+                            Padding(                                              //submit review
                               padding: EdgeInsets.only(top: 25.0),
                               child: RaisedButton(
                                 color: Colors.blue,
@@ -209,7 +188,7 @@ class _MyReviewsState extends State<MyReviews> {
   }
 }
 
-List<Container> _stars(int countdb) {
+List<Container> _stars(int countdb) {                                     //initialize rating bar
   //int count = countdb.toInt();
   return List.generate(
           countdb,

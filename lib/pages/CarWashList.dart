@@ -1,3 +1,5 @@
+//IT17051644- ILLANDARA T.S
+
 import 'package:carwash_locator/pages/CarwashDirection.dart';
 import 'package:carwash_locator/pages/MyReviews.dart';
 import 'package:flutter/material.dart';
@@ -5,34 +7,13 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../listModel/ListModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class CarWashList extends StatefulWidget {
+class CarWashList extends StatefulWidget {                             //carwashlist is a stateful widget
   @override
   _CarWashListState createState() => _CarWashListState();
 }
 
 class _CarWashListState extends State<CarWashList> {
-  List<ListModel> locations = [
-    ListModel(
-        shopName: 'Shop A',
-        location: 'Pita Kotte',
-        rating: 3,
-        icon: 'carwash1.jpg'),
-    ListModel(
-        shopName: 'Shop B',
-        location: 'Koswatta',
-        rating: 5,
-        icon: 'carwash2.jpg'),
-    ListModel(
-        shopName: 'Shop C',
-        location: 'Malabe',
-        rating: 4,
-        icon: 'carwash3.jpg'),
-    ListModel(
-        shopName: 'Shop D',
-        location: 'Maharagama',
-        rating: 2,
-        icon: 'carwash4.jpg'),
-  ];
+
 
   @override
   Widget build(BuildContext context) {
@@ -44,23 +25,23 @@ class _CarWashListState extends State<CarWashList> {
           centerTitle: true,
           elevation: 0,
         ),
-        body: StreamBuilder(
-          stream: Firestore.instance.collection('carwashlist').snapshots(),
+        body: StreamBuilder(                                                    // Stream builder is used to stream a firebase instance
+          stream: Firestore.instance.collection('carwashlist').snapshots(),     // snapshots related to carwashlist collection are retrieved from the DB
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               const Text('Loading');
               return null;
             } else {
               return ListView.builder(
-                  itemCount: snapshot.data.documents.length,
+                  itemCount: snapshot.data.documents.length,                    //no of snapshots
                   itemBuilder: (context, index) {
                     DocumentSnapshot myShopList =
-                        snapshot.data.documents[index];
+                        snapshot.data.documents[index];                         //snapshot belonging to each index
                     return Padding(
                       padding: const EdgeInsets.symmetric(
                           vertical: 1.0, horizontal: 4.0),
-                      child: Card(
-                        child: CustomListItem(
+                      child: Card(                                                      //each item in the list contains a card
+                        child: CustomListItem(                                          // the card contains a custom layout which gets called for each index and snapshot details are sent to this.
                           shopid: myShopList['shopid'],
                           location: myShopList['location'],
                           rating: myShopList['rating'],
@@ -81,7 +62,7 @@ class _CarWashListState extends State<CarWashList> {
 
 class CustomListItem extends StatelessWidget {
   const CustomListItem(
-      {this.thumbnail, this.shopName, this.location, this.rating, this.shopid});
+      {this.thumbnail, this.shopName, this.location, this.rating, this.shopid});              // initialize snapshots data in the customlistitem class
 
   final Widget thumbnail;
   final String shopName;
@@ -96,13 +77,13 @@ class CustomListItem extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Expanded(
+          Expanded(                                                         //child widget to display the shop image
             flex: 2,
             child: thumbnail,
           ),
           Expanded(
             flex: 3,
-            child: _ShopDescription(
+            child: _ShopDescription(                                        //custom layout to show the shop details
               shopid: shopid,
               shopName: shopName,
               location: location,
@@ -115,7 +96,7 @@ class CustomListItem extends StatelessWidget {
   }
 }
 
-class _ShopDescription extends StatelessWidget {
+class _ShopDescription extends StatelessWidget {                              //custom layout class to show the shop details
   const _ShopDescription({
     Key key,
     this.shopid,
@@ -155,7 +136,7 @@ class _ShopDescription extends StatelessWidget {
                 'Rating - ',
                 style: const TextStyle(fontSize: 15.0),
               ),
-              Row(children: _stars(rating))
+              Row(children: _stars(rating))                                      //rating bar
             ],
           ),
           Row(
@@ -164,7 +145,7 @@ class _ShopDescription extends StatelessWidget {
               Container(
                 //child: Padding(
                 //padding: const EdgeInsets.only(left: 4.0),
-                child: RaisedButton(
+                child: RaisedButton(                                               //button to check shop reviews
                   child: Text(
                     "Review",
                     style: TextStyle(color: Colors.white),
@@ -182,7 +163,7 @@ class _ShopDescription extends StatelessWidget {
               Container(
                 child: Padding(
                   padding: const EdgeInsets.only(left: 8.0),
-                  child: RaisedButton(
+                  child: RaisedButton(                                             //button to check directions for the shop
                     child: Text(
                       "Directions",
                       style: TextStyle(color: Colors.white),
@@ -207,7 +188,7 @@ class _ShopDescription extends StatelessWidget {
     );
   }
 }
-
+//function to initialize rating bar
 List<Container> _stars(int count) {
   return List.generate(
           count,

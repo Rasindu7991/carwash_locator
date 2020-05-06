@@ -26,30 +26,6 @@ class _UserReviewsState extends State<UserReviews> {
   //FireBase user object to set the currently logged in user.
   FirebaseUser user;
 
-  List<ReviewModel> reviews = [
-    ReviewModel(
-        name: 'Hohn Wick',
-        description: "Great app.Performance is very good",
-        rating: 4,
-        date: '2019-08-21'),
-    ReviewModel(
-        name: 'soup112',
-        description:
-            "Bad App. slow and low performernce.Takes too much battery",
-        rating: 2,
-        date: '2019-07-21'),
-    ReviewModel(
-        name: 'Ninjas',
-        description: "Great app.Can Manage task very easily. Low cost too.",
-        rating: 5,
-        date: '2019-08-25'),
-    ReviewModel(
-        name: 'catanddog',
-        description:
-            "The app is okay but could use more features and improvments",
-        rating: 3,
-        date: '2019-06-15'),
-  ];
 
   _UserReviewsState() {
     super.initState();
@@ -77,32 +53,28 @@ class _UserReviewsState extends State<UserReviews> {
           centerTitle: true,
           elevation: 0,
         ),
-        body: StreamBuilder(
+        body: StreamBuilder(                                   //Stream builder is used to initialize firebase instance
             stream: Firestore.instance
                 .collection('reviews')
                 .where("id", isEqualTo: user.uid)
-                .snapshots(),
+                .snapshots(),                                  // Getting all records belonging to logged in user
             builder: (context, snapshot) {
-//            if(!snapshot.hasData){
-//              return Text('Loading');
-//             }
-//            else{
-              if (snapshot.data == null) return CircularProgressIndicator();
-              return ListView.builder(
+              if (snapshot.data == null) return CircularProgressIndicator();            //check for null values
+              return ListView.builder(                                                  // initializing listview
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
                   itemCount: snapshot.data.documents.length,
                   itemBuilder: (context, index) {
                     DocumentSnapshot myReviews = snapshot.data.documents[index];
-                    double ratingdb = myReviews['rating'].toDouble();
-                    FullScreenDialog _myDialog = new FullScreenDialog(
+                    double ratingdb = myReviews['rating'].toDouble();                   //converting rating value from database to double value
+                    FullScreenDialog _myDialog = new FullScreenDialog(                 //initializing fullscreen dialog object
                       reviews: myReviews,
                       rating: ratingdb,
                     );
                     return Padding(
                       padding: const EdgeInsets.symmetric(
                           vertical: 1.0, horizontal: 4.0),
-                      child: Card(
+                      child: Card(                                                    //card view
                           child: Padding(
                               padding: EdgeInsets.all(8.0),
                               child: Column(
@@ -143,7 +115,7 @@ class _UserReviewsState extends State<UserReviews> {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: <Widget>[
-                                      FlatButton(
+                                      FlatButton(                                               //update button. When it is clicked the fullscreendialog widget is used.
                                         onPressed: () => Navigator.push(
                                             context,
                                             new MaterialPageRoute(
@@ -157,7 +129,7 @@ class _UserReviewsState extends State<UserReviews> {
                                         color: Colors.green,
                                       ),
                                       SizedBox(width: 8),
-                                      FlatButton(
+                                      FlatButton(                               // Delete Button
                                         onPressed: () => deleteData(myReviews),
                                         child: Text('Delete'),
                                         color: Colors.red,
@@ -179,7 +151,7 @@ List<Container> _stars(int count) {
           (i) => Container(
               child: Icon(FontAwesomeIcons.solidStar,
                   color: Colors.amber, size: 13.0)))
-      .toList(); // replace * with your rupee or use Icon instead
+      .toList(); //
 }
 
 //This function is used to Update the user Reviews Data in the FireStore Database
@@ -192,7 +164,7 @@ void updateData(DocumentSnapshot doc, String description, double rating) async {
   await db.collection('reviews').document(doc.documentID).updateData(
       {'description': description, 'date': dateString, 'rating': ratingInt});
 }
-
+//This function is used to delete the selected user review
 void deleteData(DocumentSnapshot doc) async {
   final db = Firestore.instance;
   await db.collection('reviews').document(doc.documentID).delete();
@@ -200,6 +172,7 @@ void deleteData(DocumentSnapshot doc) async {
 }
 
 //FullScreenDialog to perform the Update Function
+//review snapshots from firebase are sent to this widget
 class FullScreenDialog extends StatefulWidget {
   final DocumentSnapshot reviews;
   double rating;
@@ -210,7 +183,7 @@ class FullScreenDialog extends StatefulWidget {
   @override
   FullScreenDialogState createState() => new FullScreenDialogState();
 }
-
+//This class defines the interface that updates user reviews
 class FullScreenDialogState extends State<FullScreenDialog> {
   @override
   Widget build(BuildContext context) {
